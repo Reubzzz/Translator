@@ -2,7 +2,6 @@
 #libraries used
 import numpy as np
 import laspy 
-import matplotlib.pyplot as plt
 import open3d as o3d
 import PySimpleGUI as sg
 
