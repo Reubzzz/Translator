@@ -1,21 +1,49 @@
-# %%
+
 #libraries used
 import numpy as np
 import laspy 
-import matplotlib.pyplot as plt
 import open3d as o3d
 import PySimpleGUI as sg
 
 
+# %%
+#GUI for searching for file to read .LAS
+sg.theme("DarkTeal2")
+layout = [[sg.T("")], [sg.Text("Choose a folder: "), sg.Input(key="-IN2-" ,change_submits=True), sg.FileBrowse(key="-IN-")],[sg.Button("Submit"),[sg.Button("Exit")]]]
+
+###Building Window
+window = sg.Window('My File Browser', layout, size=(600,150))
+
+def Close():
+        window.close()
+        print(data)
+  
+
+while True:
+    event, values = window.read()
+    print(values["-IN2-"])
+    if event == sg.WIN_CLOSED or event=="Exit":
+        window.close()
+        break
+    elif event == "Submit":
+        print(values["-IN-"])
+        savedata = (values["-IN-"])
+        data = values["-IN-"]
+        Close()
+        break
+        
+
+            
 
 
 
+# %%
+print (savedata)
 
+# %%
 #path set to .LAS File
-
-input_path="../utar/"
-dataname="UtarMap1"
-point_cloud= laspy.read(input_path+dataname+".las")
+dataname=data
+point_cloud= laspy.read(dataname)
 
 # %%
 
@@ -80,23 +108,23 @@ mesh = mesh.filter_sharpen(number_of_iterations=1, strength=0.010)
 # %%
 #write .LAS file of PCD or PLY or PTS OR XYZRGB
 
-o3d.io.write_point_cloud("../utar/test.ply", pcd, write_ascii=False)
+o3d.io.write_point_cloud("./result.ply", pcd, write_ascii=False)
 
 # %%
 #Reading file of PCD or PLY or PTS OR XYZRGB
 
-testing = o3d.io.read_point_cloud("../utar/test.ply")
+testing = o3d.io.read_point_cloud("./result.ply")
 print(np.asarray(testing.points))
 print(np.asarray(testing.colors))
 
 
 # %%
 #writing the .LAS to a mesh.
-o3d.io.write_triangle_mesh("../utar/meshes.ply", mesh)
+o3d.io.write_triangle_mesh("./meshes.ply", mesh)
 
 # %%
 #Reading the Mesh
-testing = o3d.io.read_point_cloud("../utar/meshes.ply")
+testing = o3d.io.read_point_cloud("./meshes.ply")
 print(np.asarray(testing.points))
 print(np.asarray(testing.colors))
 
